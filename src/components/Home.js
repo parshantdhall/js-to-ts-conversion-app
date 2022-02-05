@@ -1,12 +1,14 @@
 import { Box, Button, Container, Grid, TextField } from "@mui/material";
 import React, { useState } from "react";
+import compileCode from "../compileCode";
 
 const Home = () => {
   const [jsCode, setJsCode] = useState("");
+  const [tsCode, setTsCode] = useState("");
 
   const handleClick = () => {
     if (jsCode === "" || jsCode === " ") return;
-    console.dir(jsCode);
+    setTsCode(compileCode(jsCode));
   };
   return (
     <Container
@@ -45,7 +47,7 @@ const Home = () => {
             label="TS Container"
             multiline
             rows={8}
-            disabled
+            value={tsCode}
             sx={{
               height: "100%",
               width: "100%",
