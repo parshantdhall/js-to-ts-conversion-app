@@ -22,6 +22,7 @@ const grabBlockContent = (cLine) => {
 
 // function to check the type of any var of function
 const checkType = (codeLine) => {
+  // ! TODO Remove spaces because it causes errors
   //   Converting the string into executable js code
   // grabbing the variable name from the string and checking its type
   return eval(
@@ -29,6 +30,14 @@ const checkType = (codeLine) => {
         (typeof(${grabVarName(codeLine)}))
         `
   );
+};
+
+const convertVar = (cLine) => {
+  let convertedVar;
+  convertedVar = `${cLine.split(" ")[0]} ${grabVarName(cLine)}: ${checkType(
+    cLine
+  )}  = ${grabBlockContent(cLine)}`;
+  return convertedVar;
 };
 
 const compileCode = (jsCode) => {
@@ -44,23 +53,30 @@ const compileCode = (jsCode) => {
    * checking can be done using switch statement and array.filter method
    * After separation convert them into TS
    */
-  console.dir(codeLine);
 
-  const compiledCode = codeLine.map((lineOfCode) => {
-    //   if(lineOfCode === '') continue;
-    let convertedVar;
+  //   console.dir(codeLine);
+
+  const compiledCode = [];
+
+  //   loop through every line of code and do the conversion
+  for (let i = 0; i < codeLine.length; i++) {
+    let lineOfCode = codeLine[i];
+    //   if empty line then continue
+    if (lineOfCode === "") {
+      continue;
+    }
+
     //   checking if the line of code is a variable
     if (
       checkType(lineOfCode) === "string" ||
       checkType(lineOfCode) === "number" ||
       checkType(lineOfCode) === "boolean"
     ) {
-      convertedVar = `${lineOfCode.split(" ")[0]} ${grabVarName(
-        lineOfCode
-      )}: ${checkType(lineOfCode)}  = ${grabBlockContent(lineOfCode)}`;
+      compiledCode.push(convertVar(lineOfCode));
     }
-    return convertedVar;
-  });
+  }
+
+  //   -----------End of conversion and returning the result----------
   return compiledCode.join("\n");
 };
 
