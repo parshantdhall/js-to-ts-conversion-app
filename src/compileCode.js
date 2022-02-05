@@ -1,7 +1,11 @@
 // Func to grab var name
 const grabVarName = (cLine) => {
-  return cLine
-    .split(" ")[1]
+  const splittedString = cLine.split(" ");
+  // if there are spaces between var name and = then remove them
+  if (splittedString[2] === "=") {
+    return splittedString[1];
+  }
+  return splittedString[1]
     .split("=")
     .join(",")
     .split("(")
@@ -26,8 +30,7 @@ const grabBlockContent = (cLine) => {
       .split(",")[1];
   }
 
-  return cLine
-    .split(" ")[1]
+  return splittedString[1]
     .split("=")
     .join(",")
     .split("(")
